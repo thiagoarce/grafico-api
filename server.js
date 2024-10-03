@@ -16,14 +16,20 @@ const chartCallback = (ChartJS) => {
 };
 const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback });
 
+// Middleware para lidar com erros de forma global
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Algo deu errado!');
+});
+
 // Endpoint para gerar o gráfico
 app.get('/api/grafico', async (req, res) => {
     try {
-        const { assistencias, publicadores } = req.query;
+        const { assistencias, publicadores, congregacao } = req.query;
 
         // Valida os parâmetros
-        if (!assistencias || !publicadores) {
-            return res.status(400).send('Parâmetros "assistencias" e "publicadores" são necessários.');
+        if (!assistencias || !publicadores || !congregacao) {
+            return res.status(400).send('Parâmetros "assistencias", "publicadores" e "congregacao" são necessários.');
         }
 
         // Converte os parâmetros para arrays
@@ -40,6 +46,9 @@ app.get('/api/grafico', async (req, res) => {
         if (assistenciasArray.length !== anos.length || publicadoresArray.length !== anos.length) {
             return res.status(400).send('O número de valores de assistências e publicadores deve corresponder aos anos de 1998 a 2024.');
         }
+
+        // Sanitiza o nome da congregação para evitar injeções de código
+        const nomeCongregacao = congregacao.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
         // Configuração do gráfico
         const configuration = {
@@ -74,7 +83,7 @@ app.get('/api/grafico', async (req, res) => {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Assistências e Publicadores por Ano (1998-2024)',
+                        text: `${nomeCongregacao} (1998-2024)`,
                         font: {
                             size: 20
                         }
