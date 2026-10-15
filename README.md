@@ -24,37 +24,45 @@ A detecção é automática. O endpoint considera o payload como novo quando rec
 
 ## Gráfico atual
 
-Quando recebe o payload novo, a API pode exibir:
+O payload novo suporta três modos de visualização por meio do parâmetro `modo`:
 
-- assistência anual;
-- assistência mensal recente;
-- média móvel de 6 meses;
-- tendência histórica;
-- tendência recente;
-- projeção P50 do modelo hierárquico;
-- projeção P70 do modelo hierárquico;
-- publicadores anuais e mensais, opcionalmente;
-- conclusão do modelo hierárquico;
-- inclinação dos últimos 5 anos;
-- ano-base e versão do modelo.
+- `geral` — padrão. Mostra apenas o histórico anual e a projeção central (P50), com leitura executiva.
+- `recente` — mostra o movimento recente por média móvel e a projeção dos próximos anos.
+- `detalhado` — mostra a visão técnica completa, incluindo dados mensais, tendências e projeções.
 
-### Padrão visual
+O gráfico também destaca visualmente o ponto **ATUAL**, separando passado realizado de futuro projetado.
 
-Por padrão ficam ativos:
+### Resumo executivo
 
-- assistência anual;
-- assistência mensal;
-- média móvel de 6 meses;
-- tendência histórica;
-- tendência recente;
-- projeção P50.
+No topo do gráfico aparecem:
 
-Por padrão ficam desativados:
+- ritmo de longo prazo, em pessoas por ano;
+- ritmo recente, em pessoas por ano;
+- classificação do modelo hierárquico;
+- ano-base do modelo, quando disponível.
 
-- projeção P70;
-- publicadores.
+### Padrões por modo
 
-A janela mensal padrão é de **36 meses**.
+**geral**
+- histórico anual: ligado;
+- projeção P50: ligada;
+- demais séries: desligadas.
+
+**recente**
+- média móvel de 6 meses: ligada;
+- projeção P50: ligada;
+- demais séries: desligadas.
+
+**detalhado**
+- histórico anual: ligado;
+- dados mensais: ligados;
+- média móvel: ligada;
+- tendência histórica: ligada;
+- tendência recente: ligada;
+- P50: ligada;
+- P70 e publicadores: desligados.
+
+A janela mensal padrão continua sendo de **36 meses**.
 
 ## Parâmetros do payload novo
 
@@ -118,12 +126,15 @@ Valores aceitos como falso incluem `0`, `false`, `nao`, `não`, `no` e `off`.
 
 | Parâmetro | Padrão | Função |
 |---|---:|---|
-| `anual` | 1 | Histórico anual |
-| `mensal` | 1 | Histórico mensal |
+| Parâmetro | Padrão | Função |
+|---|---:|---|
+| `modo` | geral | `geral`, `recente` ou `detalhado` |
+| `anual` | depende do modo | Histórico anual |
+| `mensal` | depende do modo | Dados mensais brutos |
 | `publicadores` | 0 | Séries de publicadores |
-| `media_movel` | 1 | Média móvel de 6 meses |
-| `tend_hist` | 1 | Tendência histórica |
-| `tend_rec` | 1 | Tendência recente |
+| `media_movel` | depende do modo | Média móvel de 6 meses |
+| `tend_hist` | depende do modo | Tendência histórica |
+| `tend_rec` | depende do modo | Tendência recente |
 | `p50_visivel` | 1 | Projeção P50 |
 | `p70_visivel` | 0 | Projeção P70 |
 
@@ -210,7 +221,7 @@ Resposta esperada:
 {
   "ok": true,
   "service": "grafico-api",
-  "version": "2.0.0"
+  "version": "2.1.0"
 }
 ```
 
