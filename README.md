@@ -2,13 +2,7 @@
 
 API usada pelo **Mapa de Propriedades** para gerar, em PNG, os gráficos de assistência das congregações exibidos nos popups do Google Earth.
 
-Produção:
-
-```
-https://grafico-api.onrender.com/api/grafico
-```
-
-O serviço roda no Render e é publicado a partir deste repositório.
+Endpoint de exemplo:\n\n```\nhttps://seu-servico.example/api/grafico\n```\n\nO serviço pode ser publicado em qualquer plataforma compatível com Node.js.
 
 ## Endpoint
 
@@ -226,7 +220,7 @@ Resposta esperada:
 - Express
 - Chart.js
 - chartjs-node-canvas
-- Render
+- Plataforma de hospedagem Node.js
 
 ## Execução local
 
